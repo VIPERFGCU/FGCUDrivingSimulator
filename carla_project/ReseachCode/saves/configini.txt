@@ -1,0 +1,33 @@
+[AxisMapping]
+steering = 0
+throttle = 1
+brake = 2
+joy_reverse = 5
+joy_handbrake = 4
+joy_hide_hud = 7
+joy_toggle_headlights = 1
+steering_damping = 0.5
+throttle_damping = 1.0
+brake_damping = 1.0
+random_vehicle = False
+default_vehicle = vehicle.dodge.charger_2020
+speed_unit = mph
+height_unit = ft
+
+[Settings]
+steering_damping = 0.5
+throttle_damping = 1.0
+brake_damping = 1.0
+random_vehicle = False
+default_vehicle = vehicle.dodge.charger_2020
+speed_unit = mph
+height_unit = ft
+
+[KeyMapping]
+key_reverse = q
+key_handbrake = k
+key_hide_hud = o
+key_toggle_headlights = l
+key_joystick = 7
+key_keyboard = o
+

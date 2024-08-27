@@ -1,0 +1,6 @@
+Added Features
+1. If the joystick is not detected, it will default to WASD steering (not tuned).
+2. Added more in-depth key mapping through the ini file.
+3. Added a keyboard and steering wheel mapping GUI that generates the ini file.
+4. Tuned the steering, throttle, and braking damping to make steering less sensitive.
+5. Allowed the user to hide and show the main HUD.
