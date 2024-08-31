@@ -1,0 +1,7 @@
+carla==0.9.15
+configparser==5.3.0
+DateTime==5.5
+numpy==1.21.6
+pygame==2.6.0
+pytz==2024.1
+zope.interface==6.4.post2
