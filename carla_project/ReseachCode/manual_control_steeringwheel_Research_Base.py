@@ -44,8 +44,21 @@ except ImportError:
 
 class ConfigHandler:
     def __init__(self, config_file='user_config.ini'):
-        self.config_file = config_file
+        self.config_file = self.find_config_file(config_file)
         self.config = ConfigParser()
+
+    def find_config_file(self, config_file):
+        """Searches for the config file starting from the script's location upwards."""
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        while True:
+            config_path = os.path.join(current_dir, config_file)
+            if os.path.isfile(config_path):
+                return config_path
+            parent_dir = os.path.dirname(current_dir)
+            if parent_dir == current_dir:  # Root directory reached
+                break
+            current_dir = parent_dir
+        raise FileNotFoundError(f"{config_file} not found.")
 
     def load_config(self):
         self.config.read(self.config_file)
@@ -137,6 +150,7 @@ class ConfigHandler:
         if self.config.has_section(section):
             return self.config.get(section, option, fallback=fallback)
         return fallback
+
 
 
 def find_weather_presets():
