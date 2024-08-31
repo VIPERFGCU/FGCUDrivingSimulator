@@ -45,13 +45,13 @@ Follow these steps carefully to set up the FGCU Driving Simulator project:
 
 4. Install Python 3.7 (64-bit):
    - If not already installed, download from https://www.python.org/downloads/release/python-370/
-   - Choose the appropriate installer for your system (Windows x86-64 executable installer)
+   - Choose the Windows x86-64 executable installer
 
 5. Create a virtual environment for CARLA:
    ```
    path\to\Python37\python.exe -m venv carla_env
    ```
-   Note: Adjust the path to match your Python 3.7 installation location
+   Note: Replace `path\to\Python37` with your actual Python 3.7 installation path
 
 6. Activate the CARLA Python environment:
    ```
@@ -68,7 +68,7 @@ Follow these steps carefully to set up the FGCU Driving Simulator project:
    ```
    pip install -r "path\to\FGCUDrivingSimulator\requirements.txt"
    ```
-   Alternatively, you can install packages individually:
+   Alternatively, install packages individually:
    ```
    pip install carla configparser DateTime numpy pygame pytz zope.interface
    ```
@@ -78,18 +78,24 @@ Follow these steps carefully to set up the FGCU Driving Simulator project:
    cd "path\to\FGCUDrivingSimulator\carla_project\ReseachCode"
    ```
 
-10. Run the Python script:
+10. Start the CARLA simulator:
+    ```
+    path\to\WindowsNoEditor\CarlaUE4.exe
+    ```
+
+11. Run the Python script:
     ```
     python manual_control_steeringwheel_Research_Base.py
     ```
 
 ### Note on File Paths
 
-In the instructions above, replace `path\to\` with the actual path on your system where you've stored the relevant files and folders. For example:
-- `path\to\FGCUDrivingSimulator` might be `C:\Projects\FGCUDrivingSimulator` or `D:\Research\FGCUDrivingSimulator`
-- `path\to\Python37` might be `C:\Program Files\Python37` or `C:\Users\YourUsername\AppData\Local\Programs\Python\Python37`
+Replace `path\to\` in the above instructions with the actual paths on your system:
+- `path\to\FGCUDrivingSimulator` might be `E:\FGCUDrivingSimulator`
+- `path\to\Python37` might be `C:\Users\YourUsername\AppData\Local\Programs\Python\Python37`
+- `path\to\WindowsNoEditor` might be `E:\WindowsNoEditor`
 
-Adjust all paths according to your specific setup while maintaining the overall directory structure shown in the instructions.
+Adjust all paths according to your specific setup while maintaining the overall directory structure.
 
 ## Configuration
 
@@ -137,7 +143,7 @@ height_unit = ft
 
 ## Usage
 
-1. Start the CARLA server.
+1. Start the CARLA simulator by running CarlaUE4.exe as described in the installation steps.
 
 2. Activate your Python 3.7 virtual environment if it's not already active.
 
@@ -246,6 +252,7 @@ Data logged includes:
 - If experiencing performance issues, try reducing the game resolution or graphics settings
 - If you encounter module import errors, ensure your virtual environment is activated and all required packages are installed
 - For CARLA-specific issues, refer to the official CARLA documentation
+- Make sure the CARLA simulator (CarlaUE4.exe) is running before executing the Python script
 
 ## Contributing
 
