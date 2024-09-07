@@ -1345,7 +1345,7 @@ def game_loop(args):
 
             # Handle trial start and initiation
             keys = pygame.key.get_pressed()
-            if keys[pygame.K_KP1]:
+            if keys[pygame.K_1]:
                 trial_manager.start_trial(world.player)
             if keys[pygame.K_RETURN] and trial_manager.start_screen:
                 trial_manager.initiate_trial()
