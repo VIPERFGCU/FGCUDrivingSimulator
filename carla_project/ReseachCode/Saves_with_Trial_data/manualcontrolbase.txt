@@ -44,8 +44,21 @@ except ImportError:
 
 class ConfigHandler:
     def __init__(self, config_file='user_config.ini'):
-        self.config_file = config_file
+        self.config_file = self.find_config_file(config_file)
         self.config = ConfigParser()
+
+    def find_config_file(self, config_file):
+        """Searches for the config file starting from the script's location upwards."""
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        while True:
+            config_path = os.path.join(current_dir, config_file)
+            if os.path.isfile(config_path):
+                return config_path
+            parent_dir = os.path.dirname(current_dir)
+            if parent_dir == current_dir:  # Root directory reached
+                break
+            current_dir = parent_dir
+        raise FileNotFoundError(f"{config_file} not found.")
 
     def load_config(self):
         self.config.read(self.config_file)
@@ -137,6 +150,7 @@ class ConfigHandler:
         if self.config.has_section(section):
             return self.config.get(section, option, fallback=fallback)
         return fallback
+
 
 
 def find_weather_presets():
@@ -875,6 +889,16 @@ class CameraManager(object):
 
 class TrialManager:
     def __init__(self, hud, config_handler, player, world):
+        # Initialize the data directory first
+        self.data_dir = os.path.join(os.path.dirname(__file__), 'scripts', 'data')
+        if not os.path.exists(self.data_dir):
+            os.makedirs(self.data_dir)
+        
+        # Initialize the violation events CSV file path
+        self.events_csv_file_path = self.get_events_csv_file_path()
+        self.init_events_csv()
+
+        # Now proceed with the rest of the initialization
         self.hud = hud
         self.trial_active = False
         self.start_time = None
@@ -905,19 +929,15 @@ class TrialManager:
         self.user_name = ""
         self.new_user_name = ""  # For adding a new user
         self.user_names = []
-        self.load_user_names()
         self.active_input = False  # To track if the text box is active for input
         self.dropdown_open = False  # To track if the dropdown is open
+        self.load_user_names()  # Load user names from memory file
         self.selected_name_index = len(self.user_names) - 1  # Automatically select the last used name
         if self.selected_name_index >= 0:
             self.user_name = self.user_names[self.selected_name_index]
 
         # Initialize data_to_write list
         self.data_to_write = []  # List to store data to be written to CSV
-
-        # Create the 'data' directory if it does not exist
-        if not os.path.exists('data'):
-            os.makedirs('data')
 
         # Open today's file or create a new one
         self.csv_file_path = self.get_daily_csv_file_path()
@@ -926,36 +946,83 @@ class TrialManager:
         
         # Write the header to the CSV only if the file is new/empty
         if os.path.getsize(self.csv_file_path) == 0:
-            self.csv_writer.writerow(['User Name', 'Session Code', 'Trial Code', 'Unix Timestamp', 'Time Elapsed', 'Speed', 'X', 'Y', 'Z', 'Pitch', 'Yaw', 'Roll', 'Vehicle'])
+            self.csv_writer.writerow([
+                'User Name', 'Session Code', 'Trial Code', 'Unix Timestamp',
+                'Time Elapsed', 'Speed', 'X', 'Y', 'Z', 'Pitch', 'Yaw', 'Roll', 'Heading (Degrees)', 'Heading (Cardinal)', 'Vehicle'
+            ])
 
         # Store the vehicle type
         self.vehicle_type = get_actor_display_name(player)
 
+    def get_events_csv_file_path(self):
+        """Generate a file path for the events CSV file based on the current date."""
+        date_str = datetime.datetime.now().strftime('%Y-%m-%d')
+        return os.path.join(self.data_dir, f'Trial_events_{date_str}.csv')
+
+    def init_events_csv(self):
+        """Initialize the events CSV file with a header if it doesn't exist."""
+        if not os.path.exists(self.events_csv_file_path) or os.path.getsize(self.events_csv_file_path) == 0:
+            with open(self.events_csv_file_path, 'a', newline='') as events_file:
+                events_writer = csv.writer(events_file)
+                events_writer.writerow([
+                    'Session Code', 'Trial Code', 'Unix Timestamp',
+                    'Event Type', 'Violation Duration', 'X', 'Y', 'Z', 'Pitch', 'Yaw', 'Roll'
+                ])
+
+    def record_event(self, event_type, violation_duration, location, rotation):
+        """Record an event in the events CSV file."""
+        timestamp = int(time.time())
+        with open(self.events_csv_file_path, 'a', newline='') as events_file:
+            events_writer = csv.writer(events_file)
+            events_writer.writerow([
+                self.session_code, self.trial_code, timestamp,
+                event_type, violation_duration, location.x, location.y, location.z, 
+                rotation.pitch, rotation.yaw, rotation.roll
+            ])
+
+    def generate_code(self, length=8):
+        """Generates a random code of letters and digits."""
+        return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+
     def get_daily_csv_file_path(self):
         # Generate a file name based on the current date
         date_str = datetime.datetime.now().strftime('%Y-%m-%d')
-        return os.path.join('data', f'runs_data_{date_str}.csv')
+        return os.path.join(self.data_dir, f'runs_data_{date_str}.csv')
 
-    def generate_code(self, length=8):
-        return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+    def get_totals_csv_file_path(self):
+        date_str = datetime.datetime.now().strftime('%Y-%m-%d')
+        return os.path.join(self.data_dir, f'totals_data_{date_str}.csv')
 
     def load_user_names(self):
-        memory_dir = os.path.join('data', 'memory')
-        if not os.path.exists(memory_dir):
-            os.makedirs(memory_dir)
+        """Load user names from the memory file."""
+        memory_dir = os.path.join(self.data_dir, 'memory')
         memory_file = os.path.join(memory_dir, 'user_names.json')
 
+        # Ensure the 'memory' directory exists
+        if not os.path.exists(memory_dir):
+            os.makedirs(memory_dir)
+
+        # Clear current list of names to avoid residuals
+        self.user_names = []
+
+        # Load names from the memory file if it exists
         if os.path.exists(memory_file):
             with open(memory_file, 'r') as file:
                 self.user_names = json.load(file)
+                print(f"Loaded user names from memory: {self.user_names}")
                 self.selected_name_index = len(self.user_names) - 1  # Auto-load the last used name
+        else:
+            print("Memory file not found or empty.")
 
     def save_user_name(self, name):
+        """Add a new user name to the memory file and update the dropdown list."""
         if name and name not in self.user_names:
             self.user_names.append(name)
-            memory_file = os.path.join('data', 'memory', 'user_names.json')
+            memory_dir = os.path.join(self.data_dir, 'memory')
+            memory_file = os.path.join(memory_dir, 'user_names.json')
             with open(memory_file, 'w') as file:
                 json.dump(self.user_names, file)
+            print(f"Added new user name: {name}")
         self.user_name = name
         self.selected_name_index = self.user_names.index(name)  # Set the selected name in the dropdown
 
@@ -1022,27 +1089,29 @@ class TrialManager:
 
     def write_totals_to_csv(self):
         totals_csv_path = self.get_totals_csv_file_path()
+        trial_start_date = datetime.datetime.fromtimestamp(self.start_time).strftime('%Y-%m-%d %H:%M:%S')
         with open(totals_csv_path, 'a', newline='') as totals_file:
             totals_writer = csv.writer(totals_file)
             if os.path.getsize(totals_csv_path) == 0:
-                totals_writer.writerow(['User Name', 'Session Code', 'Trial Code', 'Trial Duration', 'Average Speed', 'Max Speed', 'Min Speed', 'Violation Count', 'Average Violation Duration', 'Vehicle', 'Weather Preset'])
+                totals_writer.writerow([
+                    'User Name', 'Session Code', 'Trial Code', 'Trial Start Date', 'Trial Duration',
+                    'Average Speed', 'Max Speed', 'Min Speed', 'Violation Count', 
+                    'Average Violation Duration', 'Vehicle', 'Weather Preset'
+                ])
             totals_writer.writerow([
                 self.user_name,
                 self.session_code,
                 self.trial_code,
+                trial_start_date,
                 self.format_time(self.trial_results['trial_duration']),
-                f"{self.trial_results['avg_speed']:.2f} mph",
-                f"{self.max_speed_during_run:.2f} mph",
-                f"{self.min_speed_during_run:.2f} mph",
+                round(self.trial_results['avg_speed'], 2),  # Store as floating point
+                round(self.max_speed_during_run, 2),  # Store as floating point
+                round(self.min_speed_during_run, 2),  # Store as floating point
                 self.trial_results['violation_count'],
                 f"{self.trial_results['avg_violation_duration']:.2f} seconds",
                 self.vehicle_type,
                 self.weather_preset
             ])
-
-    def get_totals_csv_file_path(self):
-        date_str = datetime.datetime.now().strftime('%Y-%m-%d')
-        return os.path.join('data', f'totals_data_{date_str}.csv')
 
     def track_speed(self, speed, player):
         self.current_speed = speed
@@ -1059,7 +1128,11 @@ class TrialManager:
                 if self.violation_start is not None:
                     violation_end = time.time()
                     violation_duration = violation_end - self.violation_start
+                    location = player.get_transform().location
+                    rotation = player.get_transform().rotation
                     self.violation_durations.append((violation_duration, speed))
+                    # Record the violation event
+                    self.record_event('violation', violation_duration, location, rotation)
                     self.violation_start = None
                 self.speeding_warning = False
 
@@ -1068,32 +1141,41 @@ class TrialManager:
                 location = player.get_transform().location
                 rotation = player.get_transform().rotation
                 timestamp = int(time.time())
+
+                # Calculate heading (in degrees) and cardinal direction
+                heading_degrees = rotation.yaw
+                heading_cardinal = self.calculate_heading_cardinal(rotation.yaw)
+                
+                # Add data row with the new columns
                 self.data_to_write.append([
-                    self.user_name,
-                    self.session_code, 
-                    self.trial_code, 
-                    timestamp, 
-                    round(time.time() - self.start_time, 2), 
-                    speed, 
-                    location.x, 
-                    location.y, 
-                    location.z, 
-                    rotation.pitch, 
-                    rotation.yaw, 
-                    rotation.roll, 
-                    self.vehicle_type
+                    self.user_name, self.session_code, self.trial_code, timestamp,
+                    round(time.time() - self.start_time, 2), speed,  # Store as floating point
+                    location.x, location.y, location.z,
+                    rotation.pitch, rotation.yaw, rotation.roll,
+                    heading_degrees, heading_cardinal, self.vehicle_type
                 ])
+    
+    @staticmethod
+    def calculate_heading_cardinal(yaw):
+        if abs(yaw) < 45:
+            return 'N'
+        elif 45 <= yaw < 135:
+            return 'E'
+        elif abs(yaw) >= 135:
+            return 'S'
+        else:
+            return 'W'
 
     def render_results(self, display):
         if self.display_results:
             font = pygame.font.Font(None, 36)
             results_text = [
                 f"Trial Duration: {self.format_time(self.trial_results['trial_duration'])}",
-                f"Average Speed: {self.trial_results['avg_speed']:.2f} mph",
+                f"Average Speed: {int(round(self.trial_results['avg_speed']))}",  # Display as integer
                 f"Average Violation Duration: {self.trial_results['avg_violation_duration']:.2f} seconds",
                 f"Violation Count: {self.trial_results['violation_count']}",
-                f"Max Speed: {self.max_speed_during_run:.2f} mph",
-                f"Min Speed: {self.min_speed_during_run:.2f} mph"
+                f"Max Speed: {int(round(self.max_speed_during_run))}",  # Display as integer
+                f"Min Speed: {int(round(self.min_speed_during_run))}"  # Display as integer
             ]
             background = pygame.Surface((display.get_width(), display.get_height()))
             background.fill((0, 0, 0))
@@ -1204,7 +1286,7 @@ class TrialManager:
             text_surface = font.render(timer_text, True, (255, 255, 255))
             display.blit(text_surface, (display.get_width() - text_surface.get_width() - 20, 20))
             
-            speed_text = f"Speed: {self.current_speed:.2f} mph"
+            speed_text = f"Speed: {int(round(self.current_speed))} mph"  # Display as integer
             speed_surface = font.render(speed_text, True, (255, 255, 255))
             display.blit(speed_surface, (display.get_width() - speed_surface.get_width() - 20, 60))
             
@@ -1228,7 +1310,6 @@ class TrialManager:
         # Close the runs CSV file when the session ends
         if self.csv_file:
             self.csv_file.close()
-
 
 
 def game_loop(args):
@@ -1264,7 +1345,7 @@ def game_loop(args):
 
             # Handle trial start and initiation
             keys = pygame.key.get_pressed()
-            if keys[pygame.K_KP1]:
+            if keys[pygame.K_1]:
                 trial_manager.start_trial(world.player)
             if keys[pygame.K_RETURN] and trial_manager.start_screen:
                 trial_manager.initiate_trial()
