@@ -1,0 +1,13 @@
+How to activate virtual environment and run scripts using CARLA:
+
+1. Open command prompt
+2. Reset directory to C: using cd..
+3. Run command: carla_env\scripts\activate
+4. Run command: cd carla_env and then cd carla
+5. Run command: carlaue4.exe
+6. Run command: cd ..
+7. Run command: cd fgcu-carla
+8. Run command: cd scripts
+9. Run command: python ... (whatever script you need to use)
+10. When you are done: Run command: deactivate
+
