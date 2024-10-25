@@ -1,0 +1,355 @@
+import pygame
+import tkinter as tk
+from tkinter import messagebox
+from configparser import ConfigParser
+import os
+
+class ConfigHandler:
+    def __init__(self, config_file='user_config.ini'):
+        self.config_file = config_file
+        self.config = ConfigParser()
+
+    def load_config(self):
+        if os.path.exists(self.config_file):
+            self.config.read(self.config_file)
+
+        axis_mapping = {
+            'steering': None,
+            'throttle': None,
+            'brake': None,
+            'reverse': {'joystick': None, 'keyboard': None},
+            'handbrake': {'joystick': None, 'keyboard': None},
+            'hide_hud': {'joystick': None, 'keyboard': None},
+            'toggle_headlights': {'joystick': None, 'keyboard': None},
+            'shifter_drive': {'joystick': None, 'keyboard': None},
+            'shifter_neutral': {'joystick': None, 'keyboard': None},
+            'shifter_reverse': {'joystick': None, 'keyboard': None}
+        }
+        settings = {
+            'steering_damping': 0.5,
+            'throttle_damping': 1.0,
+            'brake_damping': 1.0,
+            'random_vehicle': False,
+            'default_vehicle': 'vehicle.dodge.charger_2020',
+            'speed_unit': 'km/h',
+            'height_unit': 'm'
+        }
+        key_mapping = {}
+
+        trial_settings = {
+            'location_x': 246.3,
+            'location_y': -27.0,
+            'location_z': 1.0,
+            'rotation_pitch': 0.0,
+            'rotation_yaw': -86.76,
+            'rotation_roll': 0.0,
+            'speed_limit': 45.0
+        }
+
+        if self.config.has_section('AxisMapping'):
+            for option in self.config.options('AxisMapping'):
+                if option.startswith('joy_'):
+                    control = option[4:]
+                    axis_mapping[control] = axis_mapping.get(control, {})
+                    axis_mapping[control]['joystick'] = self.config.getint('AxisMapping', option)
+                else:
+                    axis_mapping[option] = self.config.get('AxisMapping', option)
+
+        if self.config.has_section('Settings'):
+            for option in self.config.options('Settings'):
+                settings[option] = self.config.get('Settings', option)
+
+        if self.config.has_section('KeyMapping'):
+            for option in self.config.options('KeyMapping'):
+                if option.startswith('key_'):
+                    control = option[4:]
+                    key_mapping[control] = self.config.get('KeyMapping', option)
+
+        if self.config.has_section('TrialSettings'):
+            for option in self.config.options('TrialSettings'):
+                trial_settings[option] = self.config.getfloat('TrialSettings', option)
+
+        return axis_mapping, settings, key_mapping, trial_settings
+
+    def save_config(self, axis_mapping, settings, key_mapping, trial_settings):
+        if not self.config.has_section('AxisMapping'):
+            self.config.add_section('AxisMapping')
+        if not self.config.has_section('Settings'):
+            self.config.add_section('Settings')
+        if not self.config.has_section('KeyMapping'):
+            self.config.add_section('KeyMapping')
+        if not self.config.has_section('TrialSettings'):
+            self.config.add_section('TrialSettings')
+
+        for option, value in axis_mapping.items():
+            if isinstance(value, dict):  # Save joystick and keyboard mapping
+                if 'joystick' in value:
+                    self.config.set('AxisMapping', f'joy_{option}', str(value['joystick']))
+                if 'keyboard' in value:
+                    self.config.set('KeyMapping', f'key_{option}', str(value['keyboard']))
+            else:
+                self.config.set('AxisMapping', option, str(value))
+
+        for option, value in settings.items():
+            self.config.set('Settings', option, str(value))
+
+        for option, value in key_mapping.items():
+            self.config.set('KeyMapping', f'key_{option}', str(value))
+
+        for option, value in trial_settings.items():
+            self.config.set('TrialSettings', option, str(value))
+
+        with open(self.config_file, 'w') as configfile:
+            self.config.write(configfile)
+
+    def get_config(self, section, option, fallback=None):
+        if self.config.has_section(section):
+            return self.config.get(section, option, fallback=fallback)
+        return fallback
+
+
+class AxisMappingUI:
+    def __init__(self):
+        pygame.init()
+        pygame.joystick.init()
+        try:
+            self.joystick = pygame.joystick.Joystick(0)
+            self.joystick.init()
+        except pygame.error:
+            self.joystick = None
+
+        self.config_handler = ConfigHandler()
+        self.axis_mapping, self.settings, self.key_mapping, self.trial_settings = self.config_handler.load_config()
+
+        self.mapping = {
+            'steering': None,
+            'throttle': None,
+            'brake': None,
+            'reverse': {'joystick': None, 'keyboard': None},
+            'handbrake': {'joystick': None, 'keyboard': None},
+            'hide_hud': {'joystick': None, 'keyboard': None},
+            'toggle_headlights': {'joystick': None, 'keyboard': None},
+            'shifter_drive': {'joystick': None, 'keyboard': None},
+            'shifter_neutral': {'joystick': None, 'keyboard': None},
+            'shifter_reverse': {'joystick': None, 'keyboard': None}
+        }
+        self.mapping.update(self.axis_mapping)
+        self.mapping.update({'hide_hud': self.key_mapping})
+        self.mapping.update(self.settings)
+
+        self.root = tk.Tk()
+        self.root.title("Axis Mapping Configuration")
+        self.labels = {}
+        self.current_mapping = None
+        self.create_widgets()
+        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+    def create_widgets(self):
+        tk.Label(self.root, text="Press the button next to each axis to map it").pack(pady=10)
+        for axis_name in ['steering', 'throttle', 'brake']:
+            frame = tk.Frame(self.root)
+            frame.pack(pady=5)
+            label = tk.Label(frame, text=f"{axis_name.capitalize()}: {self.mapping.get(axis_name, 'Not mapped')}")
+            label.pack(side=tk.LEFT, padx=10)
+            self.labels[axis_name] = label
+            button = tk.Button(frame, text="Map", command=lambda name=axis_name: self.start_mapping('axis', name))
+            button.pack(side=tk.LEFT)
+
+        for button_name in ['reverse', 'handbrake', 'hide_hud', 'toggle_headlights', 'shifter_drive', 'shifter_neutral', 'shifter_reverse']:
+            frame = tk.Frame(self.root)
+            frame.pack(pady=5)
+            label_text = self.get_label_text(button_name)
+            label = tk.Label(frame, text=label_text)
+            label.pack(side=tk.LEFT, padx=10)
+            self.labels[button_name] = label
+            button = tk.Button(frame, text="Map Joystick", command=lambda name=button_name: self.start_mapping('button', name))
+            button.pack(side=tk.LEFT)
+            button = tk.Button(frame, text="Map Keyboard", command=lambda name=button_name: self.start_mapping('key', name))
+            button.pack(side=tk.LEFT)
+
+        self.status_label = tk.Label(self.root, text="Status: Ready", fg="blue")
+        self.status_label.pack(pady=5)
+
+        damping_settings = [
+            ('Steering Damping', 'steering_damping'),
+            ('Throttle Damping', 'throttle_damping'),
+            ('Brake Damping', 'brake_damping')
+        ]
+        for label_text, key in damping_settings:
+            frame = tk.Frame(self.root)
+            frame.pack(pady=5)
+            tk.Label(frame, text=f"{label_text}:").pack(side=tk.LEFT, padx=10)
+            entry = tk.Entry(frame)
+            entry.insert(0, self.mapping.get(key, '1.0'))
+            entry.pack(side=tk.LEFT)
+            self.labels[key] = entry
+
+        frame = tk.Frame(self.root)
+        frame.pack(pady=5)
+        self.random_vehicle_var = tk.BooleanVar(value=self.mapping['random_vehicle'])
+        random_vehicle_check = tk.Checkbutton(frame, text="Random Vehicle Model", variable=self.random_vehicle_var)
+        random_vehicle_check.pack(side=tk.LEFT, padx=10)
+
+        frame = tk.Frame(self.root)
+        frame.pack(pady=5)
+        tk.Label(frame, text="Default Vehicle Blueprint ID:").pack(side=tk.LEFT, padx=10)
+        self.default_vehicle_entry = tk.Entry(frame)
+        self.default_vehicle_entry.insert(0, self.mapping['default_vehicle'])
+        self.default_vehicle_entry.pack(side=tk.LEFT)
+
+        frame = tk.Frame(self.root)
+        frame.pack(pady=5)
+        tk.Label(frame, text="Speed Unit:").pack(side=tk.LEFT, padx=10)
+        self.speed_unit_var = tk.StringVar(value=self.mapping['speed_unit'])
+        self.speed_unit_menu = tk.OptionMenu(frame, self.speed_unit_var, 'km/h', 'mph')
+        self.speed_unit_menu.pack(side=tk.LEFT)
+
+        frame = tk.Frame(self.root)
+        frame.pack(pady=5)
+        tk.Label(frame, text="Height Unit:").pack(side=tk.LEFT, padx=10)
+        self.height_unit_var = tk.StringVar(value=self.mapping['height_unit'])
+        self.height_unit_menu = tk.OptionMenu(frame, self.height_unit_var, 'm', 'ft')
+        self.height_unit_menu.pack(side=tk.LEFT)
+
+        trial_settings = [
+            ('Location X', 'location_x'),
+            ('Location Y', 'location_y'),
+            ('Location Z', 'location_z'),
+            ('Rotation Pitch', 'rotation_pitch'),
+            ('Rotation Yaw', 'rotation_yaw'),
+            ('Rotation Roll', 'rotation_roll'),
+            ('Speed Limit (mph)', 'speed_limit')
+        ]
+        for label_text, key in trial_settings:
+            frame = tk.Frame(self.root)
+            frame.pack(pady=5)
+            tk.Label(frame, text=f"{label_text}:").pack(side=tk.LEFT, padx=10)
+            entry = tk.Entry(frame)
+            entry.insert(0, self.trial_settings.get(key, ''))
+            entry.pack(side=tk.LEFT)
+            self.labels[key] = entry
+
+        tk.Button(self.root, text="Save Configuration", command=self.save_configuration).pack(pady=20)
+
+        self.root.bind("<KeyPress>", self.on_key_press)
+        self.root.after(100, self.check_joystick_events)
+
+        self.load_initial_configuration()
+
+    def get_label_text(self, control_name):
+        if isinstance(self.mapping.get(control_name), dict):
+            joy_text = f"B{self.mapping[control_name].get('joystick', 'Not mapped')}" if self.mapping[control_name].get('joystick') is not None else "Not mapped"
+            key_text = self.mapping[control_name].get('keyboard', 'Not mapped')
+            return f"{control_name.capitalize()}: {joy_text} / {key_text}"
+        else:
+            return f"{control_name.capitalize()}: {self.mapping.get(control_name, 'Not mapped')}"
+
+    def start_mapping(self, mapping_type, name):
+        self.current_mapping = (mapping_type, name)
+        self.status_label.config(text=f"Status: Mapping {name} ({mapping_type})", fg="red")
+
+    def check_joystick_events(self):
+        for event in pygame.event.get():
+            if self.current_mapping is None:
+                continue
+
+            mapping_type, name = self.current_mapping
+
+            if mapping_type == 'axis' and event.type == pygame.JOYAXISMOTION:
+                self.mapping[name] = event.axis
+                self.labels[name].config(text=f"{name.capitalize()}: {event.axis}")
+                self.current_mapping = None
+            elif mapping_type == 'button' and event.type == pygame.JOYBUTTONDOWN:
+                if isinstance(self.mapping[name], dict):
+                    self.mapping[name]['joystick'] = event.button
+                else:
+                    self.mapping[name] = event.button
+                label_text = self.get_label_text(name)
+                self.labels[name].config(text=label_text)
+                self.current_mapping = None
+
+        if self.current_mapping is None:
+            self.status_label.config(text="Status: Ready", fg="blue")
+
+        self.root.after(100, self.check_joystick_events)
+
+    def on_key_press(self, event):
+        if self.current_mapping and self.current_mapping[0] == 'key':
+            key_name = self.current_mapping[1]
+            if isinstance(self.mapping[key_name], dict):
+                self.mapping[key_name]['keyboard'] = event.keysym
+            else:
+                self.mapping[key_name] = event.keysym
+            label_text = self.get_label_text(key_name)
+            self.labels[key_name].config(text=label_text)
+            self.current_mapping = None
+            self.status_label.config(text="Status: Ready", fg="blue")
+
+    def save_configuration(self):
+        self.mapping['random_vehicle'] = self.random_vehicle_var.get()
+        self.mapping['default_vehicle'] = self.default_vehicle_entry.get()
+        self.mapping['speed_unit'] = self.speed_unit_var.get()
+        self.mapping['height_unit'] = self.height_unit_var.get()
+
+        for key in ['steering_damping', 'throttle_damping', 'brake_damping']:
+            try:
+                self.mapping[key] = float(self.labels[key].get())
+            except ValueError:
+                messagebox.showerror("Error", f"Invalid value for {key.replace('_', ' ').capitalize()}")
+
+        for key in ['location_x', 'location_y', 'location_z', 'rotation_pitch', 'rotation_yaw', 'rotation_roll', 'speed_limit']:
+            try:
+                self.trial_settings[key] = float(self.labels[key].get())
+            except ValueError:
+                messagebox.showerror("Error", f"Invalid value for {key.replace('_', ' ').capitalize()}")
+
+        required_mappings = ['steering', 'throttle', 'brake', 'reverse', 'handbrake', 'hide_hud', 'toggle_headlights', 'shifter_drive', 'shifter_neutral', 'shifter_reverse']
+        for mapping in required_mappings:
+            if isinstance(self.mapping[mapping], dict):
+                if None in self.mapping[mapping].values():
+                    messagebox.showerror("Error", f"{mapping.capitalize()} must be fully configured.")
+                    return
+            elif self.mapping[mapping] is None:
+                messagebox.showerror("Error", f"{mapping.capitalize()} must be configured.")
+                return
+
+        self.config_handler.save_config(self.mapping, self.settings, self.key_mapping, self.trial_settings)
+        messagebox.showinfo("Success", "Configuration saved successfully!")
+        self.root.destroy()
+
+    def load_initial_configuration(self):
+        for axis_name in ['steering', 'throttle', 'brake']:
+            label_text = f"{axis_name.capitalize()}: {self.mapping.get(axis_name, 'Not mapped')}"
+            self.labels[axis_name].config(text=label_text)
+
+        for button_name in ['reverse', 'handbrake', 'hide_hud', 'toggle_headlights', 'shifter_drive', 'shifter_neutral', 'shifter_reverse']:
+            label_text = self.get_label_text(button_name)
+            self.labels[button_name].config(text=label_text)
+
+        for damping_key in ['steering_damping', 'throttle_damping', 'brake_damping']:
+            self.labels[damping_key].delete(0, tk.END)
+            self.labels[damping_key].insert(0, self.mapping[damping_key])
+
+        self.random_vehicle_var.set(self.mapping['random_vehicle'])
+        self.default_vehicle_entry.delete(0, tk.END)
+        self.default_vehicle_entry.insert(0, self.mapping['default_vehicle'])
+
+        self.speed_unit_var.set(self.mapping['speed_unit'])
+        self.height_unit_var.set(self.mapping['height_unit'])
+
+        for key in ['location_x', 'location_y', 'location_z', 'rotation_pitch', 'rotation_yaw', 'rotation_roll', 'speed_limit']:
+            self.labels[key].delete(0, tk.END)
+            self.labels[key].insert(0, self.trial_settings[key])
+
+    def run(self):
+        self.root.mainloop()
+
+    def on_closing(self):
+        if messagebox.askokcancel("Quit", "Do you want to quit?"):
+            pygame.quit()
+            self.root.destroy()
+
+
+if __name__ == '__main__':
+    ui = AxisMappingUI()
+    ui.run()
