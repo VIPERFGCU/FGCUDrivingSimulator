@@ -75,7 +75,7 @@ Follow these steps carefully to set up the FGCU Driving Simulator project:
 
 9. Navigate to the script folder:
    ```
-   cd "path\to\FGCUDrivingSimulator\carla_project\ReseachCode"
+   cd "path\to\FGCUDrivingSimulator\CARLA"
    ```
 
 10. Start the CARLA simulator:
@@ -85,7 +85,7 @@ Follow these steps carefully to set up the FGCU Driving Simulator project:
 
 11. Run the Python script:
     ```
-    python manual_control_steeringwheel_Research_Base.py
+    python Trial_V3.py
     ```
 
 ### Note on File Paths
@@ -149,7 +149,7 @@ height_unit = ft
 
 3. Run the main script:
    ```
-   python manual_control_steeringwheel_Research_Base.py
+   python Trial_V3.py
    ```
 
 4. Optional command-line arguments:
