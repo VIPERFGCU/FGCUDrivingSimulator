@@ -1,6 +1,6 @@
 # CARLA Simulation Trial Management
 
-_Last Updated: December 2025 — Johnny Mai_
+_Last Updated: December 2024 — Johnny Mai_
 
 ---
 
@@ -259,4 +259,5 @@ For any questions, setup issues, or maintenance needs,
 please contact **Johnny Mai** or refer to this documentation.
 
 ---
+
 
