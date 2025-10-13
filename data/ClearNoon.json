@@ -1,0 +1,819 @@
+{
+    "start_time": "2025-10-13T17:43:11.883309",
+    "end_time": "2025-10-13T17:44:23.625495",
+    "map": "Carla/Maps/Town03",
+    "actors": [
+        "spectator",
+        "traffic.unknown",
+        "traffic.unknown",
+        "traffic.unknown",
+        "traffic.unknown",
+        "traffic.unknown",
+        "traffic.unknown",
+        "traffic.unknown",
+        "traffic.unknown",
+        "traffic.unknown",
+        "traffic.unknown",
+        "traffic.unknown",
+        "traffic.unknown",
+        "traffic.unknown",
+        "traffic.unknown",
+        "traffic.stop",
+        "traffic.unknown",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.stop",
+        "traffic.speed_limit.90",
+        "traffic.speed_limit.90",
+        "traffic.speed_limit.60",
+        "traffic.speed_limit.60",
+        "traffic.speed_limit.30",
+        "traffic.speed_limit.30",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "traffic.speed_limit.30",
+        "traffic.speed_limit.30",
+        "traffic.speed_limit.30",
+        "traffic.speed_limit.30",
+        "traffic.speed_limit.30",
+        "traffic.traffic_light",
+        "traffic.traffic_light",
+        "vehicle.toyota.prius",
+        "sensor.camera.rgb",
+        "sensor.other.lane_invasion"
+    ],
+    "events": [
+        {
+            "event_type": "violation_lane",
+            "tick": 253,
+            "time": 8.433333773165941,
+            "speed": 19.79795180952562,
+            "location": {
+                "x": 245.6482696533203,
+                "y": -115.32513427734375,
+                "z": 0.03599927946925163
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 259,
+            "time": 8.633333783596754,
+            "speed": 20.10156043695355,
+            "location": {
+                "x": 245.7874298095703,
+                "y": -119.31405639648438,
+                "z": 0.036002177745103836
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 271,
+            "time": 9.03333380445838,
+            "speed": 20.698105729885775,
+            "location": {
+                "x": 245.98825073242188,
+                "y": -127.474365234375,
+                "z": 0.03600641340017319
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 274,
+            "time": 9.133333809673786,
+            "speed": 20.8449474350481,
+            "location": {
+                "x": 246.01278686523438,
+                "y": -129.55198669433594,
+                "z": 0.03600740432739258
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 279,
+            "time": 9.300000485032797,
+            "speed": 21.087534041729686,
+            "location": {
+                "x": 246.02413940429688,
+                "y": -133.04737854003906,
+                "z": 0.03600900620222092
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 282,
+            "time": 9.400000490248203,
+            "speed": 21.23183628249824,
+            "location": {
+                "x": 246.01181030273438,
+                "y": -135.16392517089844,
+                "z": 0.03601003438234329
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_speed",
+            "tick": 308,
+            "time": 10.266667202115059,
+            "speed": 22.366854565236697,
+            "location": {
+                "x": 244.87464904785156,
+                "y": -154.0372772216797,
+                "z": 0.036032769829034805
+            }
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 358,
+            "time": 11.933333955705166,
+            "speed": 21.442887132291556,
+            "location": {
+                "x": 231.29360961914062,
+                "y": -188.99497985839844,
+                "z": 0.03667207807302475
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 364,
+            "time": 12.133333966135979,
+            "speed": 21.183913689498652,
+            "location": {
+                "x": 229.17034912109375,
+                "y": -192.68714904785156,
+                "z": 0.036501865833997726
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 370,
+            "time": 12.333333976566792,
+            "speed": 20.939763580158957,
+            "location": {
+                "x": 226.8531036376953,
+                "y": -196.2039031982422,
+                "z": 0.03641977161169052
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 371,
+            "time": 12.366667311638594,
+            "speed": 20.896435962186537,
+            "location": {
+                "x": 226.44305419921875,
+                "y": -196.76779174804688,
+                "z": 0.03641515597701073
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 376,
+            "time": 12.533333986997604,
+            "speed": 20.683991821271277,
+            "location": {
+                "x": 224.27554321289062,
+                "y": -199.4696502685547,
+                "z": 0.03639345243573189
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 381,
+            "time": 12.700000662356615,
+            "speed": 20.456563514902772,
+            "location": {
+                "x": 221.893310546875,
+                "y": -201.93487548828125,
+                "z": 0.036370791494846344
+            },
+            "lanes_crossed": [
+                "'Solid'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 385,
+            "time": 12.833334002643824,
+            "speed": 20.218650525644826,
+            "location": {
+                "x": 219.8226776123047,
+                "y": -203.68563842773438,
+                "z": 0.03637586534023285
+            },
+            "lanes_crossed": [
+                "'Solid'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 413,
+            "time": 13.766667384654284,
+            "speed": 19.032474279147486,
+            "location": {
+                "x": 202.76834106445312,
+                "y": -208.72442626953125,
+                "z": 0.036240365356206894
+            },
+            "lanes_crossed": [
+                "'Solid'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 421,
+            "time": 14.0333340652287,
+            "speed": 19.1017209012629,
+            "location": {
+                "x": 197.6942138671875,
+                "y": -208.41925048828125,
+                "z": 0.03620507940649986
+            },
+            "lanes_crossed": [
+                "'Solid'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 441,
+            "time": 14.700000766664743,
+            "speed": 19.340617305061496,
+            "location": {
+                "x": 184.93045043945312,
+                "y": -207.28623962402344,
+                "z": 0.03817136585712433
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 447,
+            "time": 14.900000777095556,
+            "speed": 19.44394244924857,
+            "location": {
+                "x": 181.06382751464844,
+                "y": -207.0050506591797,
+                "z": 0.039082661271095276
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 448,
+            "time": 14.933334112167358,
+            "speed": 19.464605974944455,
+            "location": {
+                "x": 180.41644287109375,
+                "y": -206.96083068847656,
+                "z": 0.03782903403043747
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 511,
+            "time": 17.033334221690893,
+            "speed": 21.727791220212904,
+            "location": {
+                "x": 137.39646911621094,
+                "y": -205.33860778808594,
+                "z": 0.03600500151515007
+            },
+            "lanes_crossed": [
+                "'Solid'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 516,
+            "time": 17.200000897049904,
+            "speed": 21.96287687334621,
+            "location": {
+                "x": 133.7545928955078,
+                "y": -205.34315490722656,
+                "z": 0.036010418087244034
+            },
+            "lanes_crossed": [
+                "'Solid'"
+            ]
+        },
+        {
+            "event_type": "violation_speed",
+            "tick": 525,
+            "time": 17.500000912696123,
+            "speed": 22.38130706171917,
+            "location": {
+                "x": 127.10143280029297,
+                "y": -205.41270446777344,
+                "z": 0.036017246544361115
+            }
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 740,
+            "time": 24.666667953133583,
+            "speed": 20.893038675307444,
+            "location": {
+                "x": -28.604225158691406,
+                "y": -209.52513122558594,
+                "z": 0.036384981125593185
+            },
+            "lanes_crossed": [
+                "'Solid'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 747,
+            "time": 24.900001298636198,
+            "speed": 20.689820311638407,
+            "location": {
+                "x": -33.45353317260742,
+                "y": -209.42929077148438,
+                "z": 0.03638143464922905
+            },
+            "lanes_crossed": [
+                "'Solid'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 764,
+            "time": 25.466667994856834,
+            "speed": 20.457163193181433,
+            "location": {
+                "x": -45.05521011352539,
+                "y": -208.61837768554688,
+                "z": 0.036280229687690735
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 771,
+            "time": 25.70000134035945,
+            "speed": 20.45237431518421,
+            "location": {
+                "x": -49.799354553222656,
+                "y": -208.09591674804688,
+                "z": 0.03625284135341644
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 791,
+            "time": 26.366668041795492,
+            "speed": 19.855405965470172,
+            "location": {
+                "x": -62.82902526855469,
+                "y": -204.77357482910156,
+                "z": 0.036354199051856995
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 792,
+            "time": 26.400001376867294,
+            "speed": 19.793302808043855,
+            "location": {
+                "x": -63.4226188659668,
+                "y": -204.4827880859375,
+                "z": 0.03636052832007408
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 802,
+            "time": 26.733334727585316,
+            "speed": 19.17291629577768,
+            "location": {
+                "x": -68.7746353149414,
+                "y": -200.8372344970703,
+                "z": 0.036377809941768646
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 806,
+            "time": 26.866668067872524,
+            "speed": 18.98467650618474,
+            "location": {
+                "x": -70.5843276977539,
+                "y": -199.04974365234375,
+                "z": 0.03636052832007408
+            },
+            "lanes_crossed": [
+                "'BrokenSolid'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 815,
+            "time": 27.166668083518744,
+            "speed": 18.713009355217345,
+            "location": {
+                "x": -73.985107421875,
+                "y": -194.5467071533203,
+                "z": 0.036327801644802094
+            },
+            "lanes_crossed": [
+                "'BrokenSolid'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 828,
+            "time": 27.60000143945217,
+            "speed": 18.587320680199245,
+            "location": {
+                "x": -77.66886901855469,
+                "y": -187.36822509765625,
+                "z": 0.03628412261605263
+            },
+            "lanes_crossed": [
+                "'BrokenSolid'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 835,
+            "time": 27.833334784954786,
+            "speed": 18.55447912220185,
+            "location": {
+                "x": -79.2531509399414,
+                "y": -183.33575439453125,
+                "z": 0.03627447038888931
+            },
+            "lanes_crossed": [
+                "'BrokenSolid'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 836,
+            "time": 27.86666812002659,
+            "speed": 18.55005038443858,
+            "location": {
+                "x": -79.4602279663086,
+                "y": -182.75306701660156,
+                "z": 0.036273594945669174
+            },
+            "lanes_crossed": [
+                "'BrokenSolid'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 839,
+            "time": 27.966668125241995,
+            "speed": 18.53706886669924,
+            "location": {
+                "x": -80.05292510986328,
+                "y": -180.99603271484375,
+                "z": 0.03627141937613487
+            },
+            "lanes_crossed": [
+                "'BrokenSolid'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 840,
+            "time": 28.000001460313797,
+            "speed": 18.53279536729842,
+            "location": {
+                "x": -80.240966796875,
+                "y": -180.4075164794922,
+                "z": 0.03627065569162369
+            },
+            "lanes_crossed": [
+                "'BrokenSolid'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 886,
+            "time": 29.533334873616695,
+            "speed": 18.81397401042251,
+            "location": {
+                "x": -84.01419830322266,
+                "y": -152.30255126953125,
+                "z": 0.03617032989859581
+            },
+            "lanes_crossed": [
+                "'SolidBroken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 893,
+            "time": 29.76666821911931,
+            "speed": 18.925648244861364,
+            "location": {
+                "x": -84.10997009277344,
+                "y": -147.9005889892578,
+                "z": 0.03388456255197525
+            },
+            "lanes_crossed": [
+                "'SolidBroken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 1176,
+            "time": 39.200002044439316,
+            "speed": 21.286937802185808,
+            "location": {
+                "x": -85.47976684570312,
+                "y": 45.22475814819336,
+                "z": 0.4759625494480133
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 1183,
+            "time": 39.43333538994193,
+            "speed": 21.276218049118338,
+            "location": {
+                "x": -85.49665069580078,
+                "y": 50.18781280517578,
+                "z": 0.6223581433296204
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 1467,
+            "time": 48.90000255033374,
+            "speed": 19.41027658836086,
+            "location": {
+                "x": -23.308029174804688,
+                "y": 205.00030517578125,
+                "z": 0.03623971715569496
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 1474,
+            "time": 49.13333589583635,
+            "speed": 19.427811083071603,
+            "location": {
+                "x": -18.79123878479004,
+                "y": 204.63943481445312,
+                "z": 0.036237504333257675
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 1775,
+            "time": 59.1666697524488,
+            "speed": 20.702980588753544,
+            "location": {
+                "x": 178.21514892578125,
+                "y": 201.59841918945312,
+                "z": 2.8810055255889893
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 1776,
+            "time": 59.2000030875206,
+            "speed": 20.719221366052132,
+            "location": {
+                "x": 178.89247131347656,
+                "y": 201.4661865234375,
+                "z": 2.8797683715820312
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 1780,
+            "time": 59.33333642780781,
+            "speed": 20.779473002174377,
+            "location": {
+                "x": 181.59912109375,
+                "y": 200.89768981933594,
+                "z": 2.868479013442993
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 1889,
+            "time": 62.96666995063424,
+            "speed": 19.604347943987925,
+            "location": {
+                "x": 236.1901092529297,
+                "y": 157.53903198242188,
+                "z": 1.4987632036209106
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 1899,
+            "time": 63.30000330135226,
+            "speed": 19.66313935894551,
+            "location": {
+                "x": 237.82235717773438,
+                "y": 151.20523071289062,
+                "z": 1.3701850175857544
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 1904,
+            "time": 63.46666997671127,
+            "speed": 19.71093245444593,
+            "location": {
+                "x": 238.5112762451172,
+                "y": 147.99790954589844,
+                "z": 1.3053245544433594
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 1905,
+            "time": 63.500003311783075,
+            "speed": 19.720108440404093,
+            "location": {
+                "x": 238.63975524902344,
+                "y": 147.3534393310547,
+                "z": 1.2924387454986572
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 1910,
+            "time": 63.666669987142086,
+            "speed": 19.770644003564986,
+            "location": {
+                "x": 239.23147583007812,
+                "y": 144.11654663085938,
+                "z": 1.228514552116394
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 1980,
+            "time": 66.00000344216824,
+            "speed": 20.858031634866073,
+            "location": {
+                "x": 242.44744873046875,
+                "y": 96.96366882324219,
+                "z": 0.3069457709789276
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        },
+        {
+            "event_type": "violation_lane",
+            "tick": 1987,
+            "time": 66.23333678767085,
+            "speed": 20.928092392205087,
+            "location": {
+                "x": 242.7485809326172,
+                "y": 92.09674835205078,
+                "z": 0.24311314523220062
+            },
+            "lanes_crossed": [
+                "'Broken'"
+            ]
+        }
+    ]
+}
