@@ -67,6 +67,7 @@ def game_loop(args):
 
         trial_manager = TrialManager(vehicle, config_handler, client, weather_manager)
 
+
         # Get current settings
         settings = world.carla_world.get_settings()
 
@@ -128,6 +129,16 @@ def game_loop(args):
             for event in events:
                 if event.type == pygame.KEYUP and event.key == pygame.K_1:
                     trial_manager.start_trials()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_F11:  # Toggle fullscreen with F11. Very quick and dirty
+                        info = pygame.display.Info()
+                        screen_width, screen_height = info.current_w, info.current_h
+
+                        display = pygame.display.set_mode(
+                            (screen_width, screen_height),  # Let Pygame choose full resolution
+                            pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.FULLSCREEN
+                        )
+
 
             client_clock.tick(1000) # Go as fast as possible so it is always waiting on Carla
 

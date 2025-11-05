@@ -15,7 +15,7 @@ def main():
     client.set_timeout(10.0)
     world = client.get_world()
 
-    recording_file = r"C:\carla_env\fgcu-carla-UPDATED\data\TestAgain_20251014_173620\ClearSunset.rec"
+    recording_file = r"C:\carla_env\FGCUDrivingSimulator\data\TestAgain_20251014_173620\ClearNoon.rec"
 
     print(recording_file)
     # Show info about the recording
@@ -84,7 +84,7 @@ def main():
 
 
     output_dir = os.path.dirname(recording_file)
-    csv_path = os.path.join(output_dir, "vehicle_positions_mph.csv")
+    csv_path = os.path.join(output_dir, "vehicle_positions_mph_ClearNoon.csv")
     print(f"Logging vehicle data to: {csv_path}")
 
     # Initialize previous location/time for speed estimation (avoid "referenced before assignment")
