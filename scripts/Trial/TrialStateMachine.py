@@ -242,8 +242,41 @@ class Trial:
             for event in events:
                 if self.is_enter_button_pressed(event):
                     self.results_screen_enabled = False
+
+                # --- Redo trial if R key is pressed ---
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                    print("Redoing current trial...")
+                    self._redo_trial()
+                    return  # Exit early to prevent state change this frame
         else:
             self._switch_state(self.STATE.UNKNOWN)
+
+
+    def _redo_trial(self):
+        """Restart the same trial using the same data folder and file names."""
+        # Clean up any sensors or recorders from previous run
+        try:
+            self.end_trial()
+        except Exception as e:
+            print(f"Warning during redo cleanup: {e}")
+
+        # Reinitialize recorder and logger using the same paths and filenames
+        self.trial_recorder = ScenarioRecorder(
+            self.vehicle.get_player(),
+            self.client,
+            self.trial_data_save_folder,
+            self.trial_data_file_name
+        )
+        self.violation_logger = ViolationLogger(
+            self.trial_recorder,
+            self.vehicle.get_player(),
+            self.client.get_world()
+        )
+
+        # Reset and prepare trial
+        self.prepare_trial()
+        self._switch_state(self.STATE.READY)
+
 
     # Teleport the player to the start location and rotate
     def prepare_trial(self):
@@ -319,4 +352,5 @@ class Trial:
         if event.type == pygame.KEYUP and event.key == pygame.K_RETURN:
             return True
         return False
+    
 

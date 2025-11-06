@@ -19,8 +19,8 @@ class VehicleLightsController:
         light_state = self._vehicle.get_light_state()
         current_lights = carla.VehicleLightState.NONE
 
-        if not light_state & carla.VehicleLightState.LowBeam:
-            current_lights |= carla.VehicleLightState.LowBeam
+        if not light_state & carla.VehicleLightState.HighBeam:
+            current_lights |= carla.VehicleLightState.HighBeam
         else:
             current_lights = carla.VehicleLightState.NONE  # turn off
 

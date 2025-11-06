@@ -21,7 +21,9 @@ class Vehicle:
 
         self.vehicle_controller = VehicleController(self._player, self._world, False)
 
-
+        # physics_control = self._player.get_physics_control()
+        # physics_control.drag_coefficient = 1.5   # tweak for realism
+        # self._player.apply_physics_control(physics_control)
 
     def tick(self, clock, events):
         self.vehicle_controller.parse_events(clock, events) # Handle the keyboard presses

@@ -41,6 +41,8 @@ class VehicleController:
         # keep track of pressed keys manually
         self._pressed_keys = {}
 
+        self._player.apply_control(self.control_state.get_control())
+
     def parse_events(self, clock, events):
         """
         Main input handler called every frame.
@@ -152,10 +154,8 @@ class VehicleController:
         elif keymap.get('handbrake') and event.key == getattr(pygame, f'K_{keymap["handbrake"]}', None):
             self.control_state.set_hand_brake(not self.control_state.get_hand_brake())
         elif keymap.get('toggle_headlights') and event.key == getattr(pygame, f'K_{keymap["toggle_headlights"]}', None):
-            self.lights_controller.toggle_headlights()
+            self.lights_controller.toggle_high_beam()
 
         if event.key == pygame.K_p:
             self._autopilot_enabled = not self._autopilot_enabled
             self._player.set_autopilot(self._autopilot_enabled)
-        elif event.key == pygame.K_l:
-            self.lights_controller.toggle_high_beam()

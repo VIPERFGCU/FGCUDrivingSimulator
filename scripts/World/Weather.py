@@ -11,6 +11,7 @@ class WeatherManager:
 
         # Weather settings. Pass the key into set_weather to change the weather
         self._weather_presets = {
+            "Default": carla.WeatherParameters.ClearNoon,
             "ClearNoon": carla.WeatherParameters.ClearNoon,
             "ClearSunset": carla.WeatherParameters.ClearSunset,
             "CloudyNoon": carla.WeatherParameters.CloudyNoon,

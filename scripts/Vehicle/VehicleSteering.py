@@ -6,18 +6,25 @@
 """
 
 import carla
-
+THROTTLE_COAST_THRESHOLD = 0.1
 class VehicleControlState:
     def __init__(self):
         self._control = carla.VehicleControl()
         self._control.manual_gear_shift = False # No manual steering
+        self._control.hand_brake = False      
         self._steer_cache = 0.0
+
 
     def get_control(self):
         return self._control
 
     def set_throttle(self, value: float):
-        self._control.throttle = max(0.0, min(1.0, value))
+        self._control.throttle = max(0.1, min(1.0, value))    # Slight throttle to counteract engine braking
+        if self._control.throttle < THROTTLE_COAST_THRESHOLD:
+            self._control.manual_gear_shift = True
+            self._control.gear = 1  # coast
+        else:
+            self._control.manual_gear_shift = False
 
     def get_throttle(self) -> float:
         return self._control.throttle

@@ -24,7 +24,8 @@ class TrialManager:
             "CloudyNoon",
             "ClearNight",
             "HardRainNight",
-            "CloudyNight"
+            "CloudyNight",
+            "Default"   # For the 8th trial
         ]
         
     
@@ -57,17 +58,46 @@ class TrialManager:
         self.current_trial.start()
 
 
-    def tick(self, display, events):       
+    def tick(self, display, events):
         if self.trial_started:
-            # Check if a trial exist
-            self.current_trial.run_state_machine(display, events)    # This also renders and Records
+            # Handle O/P trial navigation keys
+            for event in events:
+                if event.type == pygame.KEYDOWN:
+                    if self.current_trial.trial_data_save_folder != None:  # The username has to be populated before shifting
+                        # Go back one trial (O key)
+                        if event.key == pygame.K_o:
+                            if self.current_loop > 0:
+                                print("Going back one trial...")
+                                self.current_loop -= 2  # because next_trial() increments it first
+                                self.next_trial()
+                            else:
+                                print("Already at first trial — cannot go back.")
+                        
+                        # Skip ahead one trial (P key)
+                        elif event.key == pygame.K_p:
+                            if self.current_loop < self.TRIAL_NUM - 1:
+                                print("Skipping ahead one trial...")
+                                self.next_trial()
+                            else:
+                                print("Already at last trial — cannot skip ahead.")
 
-            # The trial is over. Call the next trial
-            if self.current_trial.current_state == Trial.STATE.UNKNOWN:
-                if self.current_trial == self.TRIAL_NUM - 1:    # Trial starts from 0
-                    self.trial_started = False
-                else:
+            # Regular tick behavior (run the current trial)
+            if self.current_trial:
+                self.current_trial.run_state_machine(display, events)
+
+                # Move to next trial if the current one is done
+                if self.current_trial.current_state == Trial.STATE.UNKNOWN:
                     self.next_trial()
+
+
+
+import pygame
+def is_enter_button_pressed(self, event : pygame.event):
+    if event.type == pygame.JOYBUTTONDOWN and event.button == self.next_trial_joystick_button:
+        return True
+    if event.type == pygame.KEYUP and event.key == pygame.K_RETURN:
+        return True
+    return False
             
 
             
