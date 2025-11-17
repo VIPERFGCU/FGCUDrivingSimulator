@@ -50,7 +50,8 @@ def game_loop(args):
             pygame.HWSURFACE | pygame.DOUBLEBUF)
 
         # Load the specified town
-        town_name = args.town if args.town else 'Town03'
+        # town_name = args.town if args.town else 'Town03'
+        town_name = 'Town07'
         client.load_world(town_name)
 
 
